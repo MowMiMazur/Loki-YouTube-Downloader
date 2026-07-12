@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Loki — YouTube Downloader</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="frost-glow"></div>
+
+  <!-- Header -->
+  <header class="app-header">
+    <img class="brand-rune" src="media/logo.png" alt="Loki" aria-hidden="true">
+    <div class="brand-text">
+      <h1>LOKI</h1>
+      <p class="brand-sub"><span class="runes">ᛚᛟᚲᛁ</span> · <span data-i18n="app_sub">download from YouTube</span></p>
+    </div>
+    <span id="app-version" class="app-version">v—</span>
+  </header>
+
+  <!-- Nav -->
+  <nav class="tabs" role="tablist">
+    <button class="tab is-active" data-tab="download" role="tab" data-i18n="tab_download">Download</button>
+    <button class="tab" data-tab="settings" role="tab" data-i18n="tab_settings">Settings</button>
+    <button class="tab" data-tab="console" role="tab" data-i18n="tab_console">Console</button>
+  </nav>
+
+  <main class="content">
+    <!-- ————— Tab: Download ————— -->
+    <section class="panel is-active" data-panel="download">
+      <div class="field-row">
+        <input id="url" class="text-input" type="text" spellcheck="false"
+               data-i18n-ph="url_ph" placeholder="https://www.youtube.com/watch?v=...">
+        <button id="btn-check" class="btn btn-ghost" data-i18n="check">Check</button>
+      </div>
+
+      <!-- Video info card -->
+      <div id="info-card" class="info-card" hidden>
+        <div class="info-thumb"><img id="info-thumb-img" alt=""></div>
+        <div class="info-meta">
+          <p id="info-title" class="info-title">—</p>
+          <p class="info-line"><span class="info-key" data-i18n="info_channel">Channel</span><span id="info-uploader">—</span></p>
+          <p class="info-line"><span class="info-key" data-i18n="info_length">Length</span><span id="info-duration">—</span></p>
+        </div>
+      </div>
+
+      <div class="rune-divider" aria-hidden="true">
+        <span></span><i>ᛟ</i><span></span>
+      </div>
+
+      <!-- Options — fixed slots: Format · Quality · Codec -->
+      <div class="options">
+        <div class="opt opt-format">
+          <label class="opt-label" data-i18n="format">Format</label>
+          <div class="segmented" id="seg-kind">
+            <button class="seg is-active" data-kind="video" data-i18n="video">Video</button>
+            <button class="seg" data-kind="audio" data-i18n="audio">Audio</button>
+          </div>
+        </div>
+
+        <div class="opt">
+          <label class="opt-label" data-i18n="quality">Quality</label>
+          <select id="sel-quality" class="select" data-when="video"></select>
+          <select id="sel-abr" class="select" data-when="audio" hidden>
+            <option value="320">320 kbps</option>
+            <option value="256">256 kbps</option>
+            <option value="192" selected>192 kbps</option>
+            <option value="128">128 kbps</option>
+          </select>
+        </div>
+
+        <div class="opt">
+          <label class="opt-label" data-i18n="codec">Codec</label>
+          <select id="sel-container" class="select" data-when="video">
+            <option value="mp4">MP4</option>
+            <option value="mkv">MKV</option>
+          </select>
+          <select id="sel-codec" class="select" data-when="audio" hidden>
+            <option value="mp3">MP3</option>
+            <option value="wav">WAV</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Progress -->
+      <div class="progress-wrap">
+        <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+        <div class="progress-info">
+          <span id="progress-label" class="muted" data-i18n="ready">Ready</span>
+          <span id="progress-percent" class="mono">0%</span>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="actions">
+        <button id="btn-download" class="btn btn-primary" disabled data-i18n="download">Download</button>
+        <button id="btn-pause" class="btn btn-ghost" hidden data-i18n="pause">Pause</button>
+        <button id="btn-cancel" class="btn btn-danger" hidden data-i18n="cancel">Cancel</button>
+      </div>
+    </section>
+
+    <!-- ————— Tab: Settings ————— -->
+    <section class="panel" data-panel="settings">
+      <div class="setting">
+        <label class="opt-label" for="set-language" data-i18n="language">Language</label>
+        <select id="set-language" class="select">
+          <option value="en">English</option>
+          <option value="pl">Polski</option>
+        </select>
+      </div>
+
+      <div class="setting">
+        <label class="opt-label" data-i18n="save_folder">Download folder</label>
+        <div class="field-row">
+          <input id="set-path" class="text-input" type="text" readonly>
+          <button id="btn-browse" class="btn btn-ghost" data-i18n="browse">Browse</button>
+          <button id="btn-open" class="btn btn-ghost" data-i18n="open">Open</button>
+        </div>
+      </div>
+
+      <div class="setting-grid">
+        <div class="setting">
+          <label class="opt-label" for="set-type" data-i18n="default_format">Default format</label>
+          <select id="set-type" class="select">
+            <option value="video" data-i18n="video">Video</option>
+            <option value="audio" data-i18n="audio">Audio</option>
+          </select>
+        </div>
+        <div class="setting">
+          <label class="opt-label" for="set-abr" data-i18n="audio_quality">Audio quality</label>
+          <select id="set-abr" class="select">
+            <option value="320">320 kbps</option>
+            <option value="256">256 kbps</option>
+            <option value="192">192 kbps</option>
+            <option value="128">128 kbps</option>
+          </select>
+        </div>
+        <div class="setting">
+          <label class="opt-label" for="set-container" data-i18n="video_codec">Video codec</label>
+          <select id="set-container" class="select">
+            <option value="mp4">MP4</option>
+            <option value="mkv">MKV</option>
+          </select>
+        </div>
+        <div class="setting">
+          <label class="opt-label" for="set-codec" data-i18n="audio_codec">Audio codec</label>
+          <select id="set-codec" class="select">
+            <option value="mp3">MP3</option>
+            <option value="wav">WAV</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="setting">
+        <label class="opt-label" data-i18n="cookies_head">Cookies — sign-in / age-restricted (18+)</label>
+        <p class="field-hint" style="margin-top:0" data-i18n="cookies_intro">
+          Needed for age-restricted videos and content available after signing in.
+        </p>
+
+        <div class="cookies-block">
+          <div class="cookies-head">
+            <span class="cookies-title" data-i18n="cookies_file_title">cookies.txt file <b>(recommended)</b></span>
+            <span id="cookies-file-status" class="pill" data-i18n="cookies_not_loaded">Not loaded</span>
+          </div>
+          <div class="field-row">
+            <button id="btn-cookies-import" class="btn btn-ghost" data-i18n="cookies_import">Load file…</button>
+            <button id="btn-cookies-clear" class="btn btn-ghost" hidden data-i18n="cookies_remove">Remove</button>
+          </div>
+          <p class="field-hint" data-i18n="cookies_file_hint">
+            The file is <b>encrypted</b> (Windows DPAPI) and stored locally.
+          </p>
+        </div>
+
+        <div class="cookies-block">
+          <span class="cookies-title" data-i18n="cookies_browser_title">…or cookies from a browser</span>
+          <select id="set-cookies" class="select">
+            <option value="" data-i18n="cookies_browser_none">None</option>
+            <option value="chrome">Chrome</option>
+            <option value="edge">Edge</option>
+            <option value="firefox">Firefox</option>
+            <option value="brave">Brave</option>
+            <option value="opera">Opera</option>
+            <option value="vivaldi">Vivaldi</option>
+          </select>
+          <p class="field-hint" data-i18n="cookies_browser_hint">
+            Used only when no file is loaded. The selected browser must be closed before each download.
+          </p>
+        </div>
+      </div>
+
+      <div class="rune-divider" aria-hidden="true"><span></span><i>ᚦ</i><span></span></div>
+
+      <div class="setting ffmpeg-row">
+        <div>
+          <label class="opt-label" data-i18n="ffmpeg_label">FFmpeg component</label>
+          <p id="ffmpeg-status" class="muted small" data-i18n="ffmpeg_checking">Checking…</p>
+        </div>
+        <button id="btn-ffmpeg" class="btn btn-ghost" hidden data-i18n="ffmpeg_download">Download FFmpeg</button>
+      </div>
+
+      <div class="setting engine-row">
+        <div>
+          <label class="opt-label" data-i18n="engine_label">Download engine (yt-dlp)</label>
+          <p id="engine-status" class="muted small">—</p>
+        </div>
+        <button id="btn-update-ytdlp" class="btn btn-ghost" hidden data-i18n="engine_update">Update</button>
+      </div>
+    </section>
+
+    <!-- ————— Tab: Console ————— -->
+    <section class="panel" data-panel="console">
+      <pre id="console" class="console" aria-live="polite"></pre>
+      <div class="actions">
+        <button id="btn-copy" class="btn btn-ghost" data-i18n="copy">Copy</button>
+        <button id="btn-clear" class="btn btn-ghost" data-i18n="clear_console">Clear console</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <span id="status" class="muted small" data-i18n="ready">Ready</span>
+    <span class="author small" data-i18n="footer_credit">Created with ❤️ by MAZNET Mateusz Mazur</span>
+  </footer>
+
+  <!-- Modal: FFmpeg missing -->
+  <div id="ffmpeg-modal" class="modal-backdrop" hidden>
+    <div class="modal">
+      <img class="modal-rune" src="media/logo.png" alt="" aria-hidden="true">
+      <h2 id="modal-title">—</h2>
+      <p id="modal-text" class="modal-text">—</p>
+      <div id="modal-progress" class="modal-progress" hidden>
+        <div class="progress-track"><div id="modal-bar" class="progress-bar"></div></div>
+        <p id="modal-progress-text" class="muted small">—</p>
+      </div>
+      <div class="modal-actions">
+        <button id="modal-yes" class="btn btn-primary">—</button>
+        <button id="modal-no" class="btn btn-ghost">—</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message dialog (error / success / info) -->
+  <div id="msg-modal" class="modal-backdrop" hidden>
+    <div class="modal">
+      <div id="msg-icon" class="msg-icon">•</div>
+      <h2 id="msg-title">—</h2>
+      <p id="msg-text" class="modal-text">—</p>
+      <div class="modal-actions">
+        <button id="msg-action" class="btn btn-ghost" hidden></button>
+        <button id="msg-ok" class="btn btn-primary">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="i18n.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
