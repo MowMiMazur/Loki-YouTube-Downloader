@@ -1,0 +1,16 @@
+# Składniki binarne (pobierane automatycznie)
+bin/*.exe
+
+# Lokalna konfiguracja użytkownika
+config/settings.json
+config/cookies.dat
+
+# Python
+__pycache__/
+*.pyc
+
+# Build PyInstaller
+build/
+dist/
+exec/
+version_info.txt
