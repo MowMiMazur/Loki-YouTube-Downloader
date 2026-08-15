@@ -3,30 +3,76 @@ Copyright 2026 Mateusz Mazur (MAZNET)
 
 Author / Autor: Mateusz Mazur (MAZNET) — https://maznet.pl
 
---------------------------------------------------------------------------------
-EN
---------------------------------------------------------------------------------
-This product is licensed under the Apache License, Version 2.0 (see the LICENSE
-file). If you use, modify, or redistribute this software or parts of it, you
-must retain this attribution and preserve the copyright and authorship notices
-above, as required by section 4 of the License.
+This product is licensed under the Apache License, Version 2.0.
+Ten produkt jest udostępniany na Licencji Apache w wersji 2.0.
 
-This product bundles or relies on third-party software distributed under its own
-terms, in particular yt-dlp (Unlicense), pywebview (BSD-3-Clause) and FFmpeg
-(LGPL/GPL — downloaded at runtime, not distributed with this product).
+You may obtain a copy of the License at / Kopię Licencji znajdziesz w pliku
+LICENSE oraz pod adresem:
 
---------------------------------------------------------------------------------
-PL
---------------------------------------------------------------------------------
-Ten produkt jest udostępniany na Licencji Apache w wersji 2.0 (zob. plik
-LICENSE). Jeżeli używasz, modyfikujesz lub rozpowszechniasz to oprogramowanie
-lub jego części, musisz zachować powyższą informację o autorstwie oraz noty
-o prawach autorskich, zgodnie z sekcją 4 Licencji.
+    http://www.apache.org/licenses/LICENSE-2.0
 
-Produkt korzysta z oprogramowania firm trzecich udostępnianego na własnych
-warunkach, w szczególności z yt-dlp (Unlicense), pywebview (BSD-3-Clause) oraz
-FFmpeg (LGPL/GPL — pobierany w trakcie działania, nie jest rozpowszechniany
-razem z produktem).
+================================================================================
+  EN — Summary (informative only)
+================================================================================
 
-Powyższe tłumaczenie ma charakter wyłącznie informacyjny — wiążąca jest wersja
-angielska Licencji.
+  You MAY:      use, copy, modify, merge, publish, distribute and sublicense
+                the software, including for commercial purposes, and you
+                receive a patent grant from the contributors.
+  You MUST:     include a copy of the License and of this NOTICE file with
+                every copy or derivative work, keep all copyright, patent,
+                trademark and attribution notices, and state prominently any
+                changes you made to the files.
+  You MAY NOT:  use the licensor's names or trademarks to endorse your product,
+                or hold the licensor liable — the software is provided
+                "AS IS", without warranties or conditions of any kind.
+
+  This summary is not the license. The full, legally binding text is the
+  English Apache License 2.0 in the LICENSE file.
+
+  If you use, modify, or redistribute this software or parts of it, you must
+  retain the attribution above and preserve the copyright and authorship
+  notices, as required by section 4 of the License.
+
+================================================================================
+  PL — Podsumowanie (wyłącznie informacyjne)
+================================================================================
+
+  MOŻESZ:       używać, kopiować, modyfikować, łączyć, publikować,
+                rozpowszechniać i sublicencjonować oprogramowanie, także
+                w celach komercyjnych; otrzymujesz również licencję patentową
+                od współtwórców.
+  MUSISZ:       dołączyć kopię Licencji oraz ten plik NOTICE do każdej kopii
+                lub pracy pochodnej, zachować wszystkie noty o prawach
+                autorskich, patentach, znakach towarowych i autorstwie oraz
+                wyraźnie oznaczyć wprowadzone przez siebie zmiany w plikach.
+  NIE MOŻESZ:   używać nazw ani znaków towarowych licencjodawcy do promowania
+                swojego produktu, ani pociągać licencjodawcy do
+                odpowiedzialności — oprogramowanie dostarczane jest w stanie
+                "TAKIM, JAKIE JEST" (AS IS), bez jakichkolwiek gwarancji
+                i rękojmi.
+
+  Powyższe podsumowanie nie jest treścią licencji i nie ma mocy prawnej.
+  Wiążący jest wyłącznie pełny, angielski tekst Licencji Apache 2.0
+  zamieszczony w pliku LICENSE.
+
+  Jeżeli używasz, modyfikujesz lub rozpowszechniasz to oprogramowanie lub jego
+  części, musisz zachować powyższą informację o autorstwie oraz noty o prawach
+  autorskich, zgodnie z sekcją 4 Licencji.
+
+================================================================================
+  Third-party software / Oprogramowanie firm trzecich
+================================================================================
+
+  EN — This product bundles or relies on third-party software distributed under
+  its own terms. These components are not covered by the copyright notice above
+  and remain subject to their own licenses:
+
+  PL — Produkt korzysta z oprogramowania firm trzecich udostępnianego na
+  własnych warunkach. Komponenty te nie są objęte powyższą notą o prawach
+  autorskich i podlegają własnym licencjom:
+
+    - yt-dlp      — Unlicense (public domain)
+    - pywebview   — BSD-3-Clause
+    - FFmpeg      — LGPL/GPL — downloaded at runtime, not distributed with this
+                    product / pobierany w trakcie działania, nie jest
+                    rozpowszechniany razem z produktem
