@@ -150,6 +150,7 @@ class Api:
             audio_codec=req.get("audio_codec", self.settings.get("audio_codec")),
             audio_quality=str(req.get("audio_quality", self.settings.get("audio_quality"))),
             cookies_browser=self.settings.get("cookies_browser") or "",
+            progressive=bool(req.get("progressive")),
         )
         if not request.url:
             return {"ok": False, "code": "err_no_url"}
@@ -191,7 +192,12 @@ class Api:
     # FFmpeg
     # ------------------------------------------------------------------ #
     def check_ffmpeg(self) -> bool:
-        return ffmpeg.is_available()
+        # Must never raise: a rejected promise would leave the frontend without
+        # the FFmpeg prompt and without the update check.
+        try:
+            return ffmpeg.is_available()
+        except Exception:  # noqa: BLE001
+            return False
 
     def quit_app(self) -> bool:
         try:

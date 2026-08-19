@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Loki — YouTube Downloader</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <div class="frost-glow"></div>
@@ -36,6 +36,16 @@
         <input id="url" class="text-input" type="text" spellcheck="false"
                data-i18n-ph="url_ph" placeholder="https://www.youtube.com/watch?v=...">
         <button id="btn-check" class="btn btn-ghost" data-i18n="check">Check</button>
+      </div>
+
+      <!-- Placeholder shown while the link is being checked -->
+      <div id="info-skeleton" class="info-skeleton" hidden aria-hidden="true">
+        <div class="sk-thumb"><i class="sk-rune">ᛟ</i></div>
+        <div class="sk-meta">
+          <span class="sk-line sk-line-title"></span>
+          <span class="sk-line sk-line-a"></span>
+          <span class="sk-line sk-line-b"></span>
+        </div>
       </div>
 
       <!-- Video info card -->
@@ -287,8 +297,8 @@
     </div>
   </div>
 
-  <script src="i18n.js"></script>
-  <script src="app.js"></script>
-  <script src="dropdown.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/dropdown.js"></script>
 </body>
 </html>

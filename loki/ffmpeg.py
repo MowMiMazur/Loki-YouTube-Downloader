@@ -88,6 +88,63 @@ def _extract(zip_path: str) -> bool:
     return found
 
 
+def terminate_children() -> int:
+    """Kill ffmpeg/ffprobe processes started by this app; return how many.
+
+    yt-dlp runs FFmpeg through a blocking Popen.run(), so a merge or an audio
+    conversion cannot be interrupted from a hook — the only way to stop it is to
+    end the process. Only our own children are touched, never an FFmpeg the user
+    happens to be running elsewhere.
+    """
+    if os.name != "nt":
+        return 0
+
+    import ctypes
+    from ctypes import wintypes
+
+    TH32CS_SNAPPROCESS = 0x0002
+    PROCESS_TERMINATE = 0x0001
+    INVALID_HANDLE = ctypes.c_void_p(-1).value
+
+    class PROCESSENTRY32(ctypes.Structure):
+        _fields_ = [
+            ("dwSize", wintypes.DWORD),
+            ("cntUsage", wintypes.DWORD),
+            ("th32ProcessID", wintypes.DWORD),
+            ("th32DefaultHeapID", ctypes.POINTER(ctypes.c_ulong)),
+            ("th32ModuleID", wintypes.DWORD),
+            ("cntThreads", wintypes.DWORD),
+            ("th32ParentProcessID", wintypes.DWORD),
+            ("pcPriClassBase", ctypes.c_long),
+            ("dwFlags", wintypes.DWORD),
+            ("szExeFile", ctypes.c_char * 260),
+        ]
+
+    kernel32 = ctypes.windll.kernel32
+    snapshot = kernel32.CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0)
+    if snapshot == INVALID_HANDLE:
+        return 0
+
+    killed = 0
+    try:
+        entry = PROCESSENTRY32()
+        entry.dwSize = ctypes.sizeof(PROCESSENTRY32)
+        ours = os.getpid()
+        more = kernel32.Process32First(snapshot, ctypes.byref(entry))
+        while more:
+            name = entry.szExeFile.decode("latin-1", "replace").lower()
+            if entry.th32ParentProcessID == ours and name in _TARGETS:
+                handle = kernel32.OpenProcess(PROCESS_TERMINATE, False, entry.th32ProcessID)
+                if handle:
+                    if kernel32.TerminateProcess(handle, 1):
+                        killed += 1
+                    kernel32.CloseHandle(handle)
+            more = kernel32.Process32Next(snapshot, ctypes.byref(entry))
+    finally:
+        kernel32.CloseHandle(snapshot)
+    return killed
+
+
 def _safe_remove(path: str) -> None:
     try:
         if os.path.exists(path):

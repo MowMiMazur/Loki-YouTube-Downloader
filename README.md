@@ -118,14 +118,19 @@ Loki-YouTube-Downloader/
 │   ├── ffmpeg.py         # Wykrywanie i pobieranie FFmpega
 │   ├── cookies.py        # Szyfrowany magazyn ciasteczek (DPAPI)
 │   ├── settings.py       # Trwałe ustawienia
+│   ├── updates.py        # Sprawdzanie nowej wersji (API maznet.pl)
 │   ├── logger.py         # Logger yt-dlp
 │   └── paths.py          # Ścieżki (źródła / PyInstaller)
 ├── web/                  # Cały interfejs użytkownika
 │   ├── index.html        # Powłoka aplikacji (jedna strona)
-│   ├── styles.css        # Style
-│   ├── app.js            # Logika interfejsu
-│   ├── dropdown.js       # Własne listy rozwijane (zamiast natywnych <select>)
-│   └── i18n.js           # Wspólny słownik PL/EN
+│   ├── css/
+│   │   └── styles.css    # Style
+│   ├── js/
+│   │   ├── app.js        # Logika interfejsu
+│   │   ├── dropdown.js   # Własne listy rozwijane (zamiast natywnych <select>)
+│   │   └── i18n.js       # Wspólny słownik PL/EN
+│   ├── fonts/            # Noto Sans (dla widoku webview)
+│   └── media/            # Logo i dźwięk powiadomienia
 ├── bin/                  # ffmpeg.exe / ffprobe.exe (pobierane automatycznie)
 └── config/               # settings.json (konfiguracja użytkownika)
 ```
@@ -263,14 +268,19 @@ Loki-YouTube-Downloader/
 │   ├── ffmpeg.py         # FFmpeg detection / download
 │   ├── cookies.py        # Encrypted cookie store (DPAPI)
 │   ├── settings.py       # Persistent settings
+│   ├── updates.py        # New-version check (maznet.pl API)
 │   ├── logger.py         # yt-dlp logger
 │   └── paths.py          # Paths (source / PyInstaller)
 ├── web/                  # The entire user interface
 │   ├── index.html        # App shell (single page)
-│   ├── styles.css        # Styles
-│   ├── app.js            # UI logic
-│   ├── dropdown.js       # Custom dropdowns (replacing native <select>)
-│   └── i18n.js           # Shared PL/EN dictionary
+│   ├── css/
+│   │   └── styles.css    # Styles
+│   ├── js/
+│   │   ├── app.js        # UI logic
+│   │   ├── dropdown.js   # Custom dropdowns (replacing native <select>)
+│   │   └── i18n.js       # Shared PL/EN dictionary
+│   ├── fonts/            # Noto Sans (for the webview)
+│   └── media/            # Logo and notification sound
 ├── bin/                  # ffmpeg.exe / ffprobe.exe (auto-downloaded)
 └── config/               # settings.json (user config)
 ```

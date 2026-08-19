@@ -1,3 +1,7 @@
 pywebview>=5.0
+# build.ps1 upgrades this to the yt-dlp nightly on purpose: the 2026.07.04
+# stable still defaults to the android_vr player client, which YouTube gated on
+# 2026-08-02 (every DASH stream answers HTTP 403). Build with -StableEngine once
+# a stable release carries the 2026-08-18 client changes.
 yt-dlp>=2026.7.4
 pillow

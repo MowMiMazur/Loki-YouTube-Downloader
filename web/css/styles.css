@@ -5,12 +5,12 @@
 
 @font-face {
   font-family: "Noto Sans";
-  src: url("fonts/NotoSans-Regular.ttf") format("truetype");
+  src: url("../fonts/NotoSans-Regular.ttf") format("truetype");
   font-weight: 400; font-style: normal;
 }
 @font-face {
   font-family: "Noto Sans";
-  src: url("fonts/NotoSans-Bold.ttf") format("truetype");
+  src: url("../fonts/NotoSans-Bold.ttf") format("truetype");
   font-weight: 700; font-style: normal;
 }
 
@@ -206,6 +206,98 @@ body > *:not(.frost-glow):not(.modal-backdrop):not(.select-menu) { position: rel
 }
 .info-line { display: flex; gap: 10px; font-size: 13px; }
 .info-key { color: var(--muted); min-width: 58px; }
+
+/* ————————————————— Link check (loading state) —————————————————
+   Three coordinated cues while get_info() runs: a frost beam sweeping
+   under the URL field, a spinner in the Check button and a shimmering
+   placeholder standing in for the info card.
+   ------------------------------------------------------------ */
+.text-input.is-checking {
+  border-color: var(--frost);
+  background-image: linear-gradient(
+    90deg, transparent, var(--frost) 42%, var(--frost-hi) 50%, var(--frost) 58%, transparent
+  );
+  background-repeat: no-repeat;
+  background-size: 55% 2px;
+  background-position: -60% 100%;
+  animation: scanBeam 1.25s linear infinite;
+}
+@keyframes scanBeam {
+  from { background-position: -60% 100%; }
+  to   { background-position: 160% 100%; }
+}
+
+#btn-check { min-width: 118px; }
+.btn.is-busy {
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  color: var(--frost); border-color: var(--frost);
+}
+.btn.is-busy:disabled { opacity: 0.9; }
+.btn.is-busy::before {
+  content: ""; flex: none; width: 13px; height: 13px;
+  border: 1.5px solid var(--frost-dim);
+  border-top-color: var(--frost); border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.info-skeleton {
+  display: flex; gap: 16px; margin-top: 18px;
+  background: var(--panel);
+  border: 1px solid var(--line-soft); border-left: 2px solid var(--frost);
+  padding: 15px 16px;
+  animation: fade 0.22s ease;
+}
+.sk-thumb {
+  width: 152px; height: 86px; flex: none;
+  display: grid; place-items: center;
+  border: 1px solid var(--line-soft);
+}
+.sk-rune {
+  font-style: normal; font-size: 22px; color: var(--frost);
+  animation: runePulse 1.7s ease-in-out infinite;
+}
+.sk-meta {
+  flex: 1; min-width: 0; padding-top: 3px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.sk-line { display: block; height: 11px; }
+.sk-line-title { height: 15px; width: 76%; }
+.sk-line-a { width: 54%; }
+.sk-line-b { width: 38%; }
+.sk-thumb, .sk-line {
+  background: linear-gradient(90deg, var(--panel-2) 0%, #26313a 45%, var(--panel-2) 90%);
+  background-size: 220% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+@keyframes shimmer {
+  from { background-position: 130% 0; }
+  to   { background-position: -30% 0; }
+}
+@keyframes runePulse {
+  0%, 100% { opacity: 0.35; text-shadow: none; }
+  50%      { opacity: 0.95; text-shadow: 0 0 14px rgba(147,183,200,0.55); }
+}
+
+/* Reduced motion: nothing travels or spins any more, but the feedback stays
+   alive — a calm opacity pulse instead of silence. */
+@media (prefers-reduced-motion: reduce) {
+  .text-input.is-checking {
+    background-size: 100% 2px; background-position: 50% 100%;
+    animation: none;
+  }
+  .btn.is-busy::before,
+  .sk-rune { animation: calmPulse 1.8s ease-in-out infinite; }
+  .sk-thumb, .sk-line {
+    background: var(--panel-2);
+    animation: calmPulse 1.8s ease-in-out infinite;
+  }
+  .update-badge { animation: badgeIn 0.4s ease both; }
+}
+@keyframes calmPulse {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 1; }
+}
 
 /* ————————————————— Rune divider ————————————————— */
 .rune-divider { display: flex; align-items: center; gap: 14px; margin: 24px 2px; }

@@ -20,6 +20,8 @@ function playNotify() {
 
 const state = {
   kind: "video",
+  checking: false,         // a link check is in flight
+  progressive: false,      // current download uses the 360p fallback
   downloading: false,
   paused: false,
   ffmpegModalOpen: false,
@@ -148,7 +150,7 @@ async function fetchInfo() {
   const url = $("#url").value.trim();
   if (!url) return;
   setStatus(t("fetching_info"));
-  $("#btn-check").disabled = true;
+  setChecking(true);
   whenReady(async () => {
     try {
       const res = await api().get_info(url);
@@ -164,9 +166,20 @@ async function fetchInfo() {
       setStatus(t("info_error_status"));
       showDialog({ kind: "error", title: t("dlg_error_title"), text: t("dlg_info_error_text") });
     } finally {
-      $("#btn-check").disabled = false;
+      setChecking(false);
     }
   });
+}
+
+/* Loading state for the link check: beam under the field, spinner in the
+   button and a shimmering stand-in for the info card. */
+function setChecking(on) {
+  state.checking = on;
+  $("#url").classList.toggle("is-checking", on);
+  $("#btn-check").classList.toggle("is-busy", on);
+  $("#btn-check").disabled = on;
+  $("#info-skeleton").hidden = !on;
+  if (on) $("#info-card").hidden = true;   // the placeholder takes its slot
 }
 
 function showInfo(info) {
@@ -186,7 +199,7 @@ function showInfo(info) {
   $("#btn-download").disabled = false;
 }
 
-function startDownload() {
+function startDownload({ progressive = false } = {}) {
   const url = $("#url").value.trim();
   if (!url) return;
   let height = 0;
@@ -207,7 +220,9 @@ function startDownload() {
     container: $("#sel-container").value,
     audio_codec: $("#sel-codec").value,
     audio_quality: $("#sel-abr").value,
+    progressive,
   };
+  state.progressive = progressive;
   whenReady(async () => {
     const res = await api().start_download(req);
     if (!res.ok) {
@@ -215,6 +230,7 @@ function startDownload() {
       return;
     }
     enterDownloadingUI();
+    if (progressive) setStatus(t("dl_progressive_status"));
   });
 }
 
@@ -396,6 +412,13 @@ function checkFfmpeg() {
     state.ffmpegAvailable = !!ok;
     renderFfmpegStatus();
     if (!ok) openFfmpegModal();   // hard gate on startup
+  }).catch((e) => {
+    // Never swallow this: without the prompt the app looks fine but cannot merge.
+    state.ffmpegAvailable = false;
+    renderFfmpegStatus();
+    appendLog("[Loki] FFmpeg check failed: " + e);
+    openFfmpegModal();
+  }).finally(() => {
     api().check_app_update();     // background — always after the FFmpeg check
   });
 }
@@ -702,6 +725,19 @@ function showDownloadError(msg) {
   const cookieLocked = /permission denied[\s\S]*cookies|could not copy[\s\S]*cookie|cookies\.sqlite|cookie database/i.test(raw);
   if (cookieLocked) {
     showDialog({ kind: "error", title: t("dlg_cookie_locked_title"), text: t("dlg_cookie_locked_text") });
+    return;
+  }
+
+  // YouTube refused the stream itself. Offer the one stream it still serves.
+  const forbidden = /403:?\s*forbidden|http error 403/i.test(raw);
+  if (forbidden) {
+    showDialog({
+      kind: "error",
+      title: t("dlg_forbidden_title"),
+      text: state.progressive ? t("dlg_forbidden_text_final") : t("dlg_forbidden_text"),
+      actionLabel: state.progressive ? null : t("dlg_forbidden_action"),
+      onAction: state.progressive ? null : () => startDownload({ progressive: true }),
+    });
     return;
   }
 

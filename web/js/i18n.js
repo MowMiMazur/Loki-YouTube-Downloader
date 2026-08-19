@@ -95,10 +95,26 @@ const I18N = {
     dlg_error_title: "Error",
     dlg_info_error_text: "Failed to fetch video info.",
     unknown_error: "Unknown error.",
-    dlg_cookie_locked_title: "Browser is open",
+    dlg_cookie_locked_title: "Cannot read the browser cookies",
     dlg_cookie_locked_text:
-      "Cannot read the cookies because the browser is running (it locks the cookie database).\n\n" +
-      "Close the selected browser COMPLETELY (all windows, check the system tray too) and try again.",
+      "The system denied access to the cookie database. Two possible reasons:\n\n" +
+      "1. The browser is running — close it COMPLETELY (all windows, check the system tray).\n" +
+      "2. Your antivirus protects browser data (ESET, Bitdefender, Kaspersky and others block " +
+      "other programs from reading the profile, even with the browser closed).\n\n" +
+      "If the browser is closed, use a cookies.txt file instead — export it with the " +
+      "“Get cookies.txt LOCALLY” extension and load it in Settings. That path works regardless of the antivirus.",
+    dlg_forbidden_title: "YouTube refused the stream (403)",
+    dlg_forbidden_text:
+      "YouTube is currently serving high-quality streams only to players that pass its new " +
+      "anti-bot check, and it rejects everything else after a few kilobytes. Neither your link " +
+      "nor your connection is at fault.\n\n" +
+      "One stream is still served in full: progressive 360p (video with sound). " +
+      "You can download that now, or wait for a yt-dlp update that restores the rest.",
+    dlg_forbidden_action: "Download in 360p",
+    dlg_forbidden_text_final:
+      "YouTube refused the 360p stream as well. Try again in a few minutes — and if you have " +
+      "a cookies.txt file for a signed-in account, load it in Settings; that often helps.",
+    dl_progressive_status: "Downloading the fallback stream (360p)…",
     dlg_needs_cookies_title: "Sign-in required (cookies)",
     dlg_needs_cookies_text:
       "This video requires signing in — e.g. an age restriction (18+) or content available only " +
@@ -249,10 +265,26 @@ const I18N = {
     dlg_error_title: "Błąd",
     dlg_info_error_text: "Nie udało się pobrać informacji o filmie.",
     unknown_error: "Nieznany błąd.",
-    dlg_cookie_locked_title: "Przeglądarka jest otwarta",
+    dlg_cookie_locked_title: "Brak dostępu do cookies przeglądarki",
     dlg_cookie_locked_text:
-      "Nie można odczytać plików cookies, ponieważ przeglądarka jest uruchomiona (blokuje bazę cookies).\n\n" +
-      "Zamknij CAŁKOWICIE wybraną przeglądarkę (wszystkie okna, sprawdź też ikonę w zasobniku) i spróbuj ponownie.",
+      "System odmówił dostępu do bazy cookies. Dwie możliwe przyczyny:\n\n" +
+      "1. Przeglądarka jest uruchomiona — zamknij ją CAŁKOWICIE (wszystkie okna, sprawdź zasobnik).\n" +
+      "2. Antywirus chroni dane przeglądarki (ESET, Bitdefender, Kaspersky i podobne blokują odczyt " +
+      "profilu przez inne programy, nawet przy zamkniętej przeglądarce).\n\n" +
+      "Jeśli przeglądarka jest zamknięta, użyj pliku cookies.txt — wyeksportuj go wtyczką " +
+      "„Get cookies.txt LOCALLY” i wczytaj w Ustawieniach. To obejście działa niezależnie od antywirusa.",
+    dlg_forbidden_title: "YouTube odmówił strumienia (403)",
+    dlg_forbidden_text:
+      "YouTube wydaje teraz strumienie w wysokiej jakości tylko odtwarzaczom, które przechodzą jego " +
+      "nowe zabezpieczenie antybotowe — pozostałym przerywa transmisję po kilku kilobajtach. " +
+      "Ani link, ani Twoje łącze nie są tu winne.\n\n" +
+      "Jeden strumień nadal jest wydawany w całości: progresywne 360p (obraz z dźwiękiem). " +
+      "Możesz pobrać go teraz albo poczekać na aktualizację yt-dlp, która przywróci resztę.",
+    dlg_forbidden_action: "Pobierz w 360p",
+    dlg_forbidden_text_final:
+      "YouTube odmówił także strumienia 360p. Spróbuj ponownie za kilka minut — a jeśli masz plik " +
+      "cookies.txt zalogowanego konta, wczytaj go w Ustawieniach; to często pomaga.",
+    dl_progressive_status: "Pobieranie strumienia awaryjnego (360p)…",
     dlg_needs_cookies_title: "Wymagane logowanie (cookies)",
     dlg_needs_cookies_text:
       "Ten film wymaga zalogowania — np. ograniczenie wieku 18+ lub treść dostępna tylko po zalogowaniu.\n\n" +
