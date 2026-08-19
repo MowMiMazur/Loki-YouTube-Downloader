@@ -9,10 +9,11 @@ import os
 import subprocess
 import sys
 import threading
+import webbrowser
 
 import webview
 
-from . import APP_VERSION, cookies, ffmpeg, info, paths
+from . import APP_VERSION, cookies, ffmpeg, info, paths, updates
 from .downloader import Callbacks, DownloadJob, DownloadRequest
 from .logger import strip_ansi
 from .settings import SettingsManager
@@ -206,6 +207,29 @@ class Api:
             on_done=lambda ok, detail: self._emit("ffmpeg-done", ok=ok, detail=detail),
         )
         return True
+
+    # ------------------------------------------------------------------ #
+    # App update (informational only — nothing is installed)
+    # ------------------------------------------------------------------ #
+    def check_app_update(self) -> bool:
+        """Ask the maznet.pl API in a thread; the verdict arrives as an event."""
+
+        def worker():
+            self._emit("app-update", **updates.check(APP_VERSION))
+
+        threading.Thread(target=worker, daemon=True).start()
+        return True
+
+    def open_url(self, url: str) -> bool:
+        """Open an http(s) link in the system browser."""
+        url = (url or "").strip()
+        if not url.lower().startswith(("http://", "https://")):
+            return False
+        try:
+            webbrowser.open(url)
+            return True
+        except Exception:  # noqa: BLE001
+            return False
 
     # ------------------------------------------------------------------ #
     # yt-dlp engine

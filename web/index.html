@@ -16,7 +16,10 @@
       <h1>LOKI</h1>
       <p class="brand-sub"><span class="runes">ᛚᛟᚲᛁ</span> · <span data-i18n="app_sub">download from YouTube</span></p>
     </div>
-    <span id="app-version" class="app-version">v—</span>
+    <div class="version-box">
+      <span id="app-version" class="app-version">v—</span>
+      <button id="update-badge" class="update-badge" type="button" hidden></button>
+    </div>
   </header>
 
   <!-- Nav -->
@@ -241,6 +244,36 @@
     </div>
   </div>
 
+  <!-- Modal: a newer version is available (info only, no auto-update) -->
+  <div id="update-modal" class="modal-backdrop" hidden>
+    <div class="modal modal-update">
+      <div class="update-glyph" aria-hidden="true">ᛉ</div>
+      <h2 id="update-title">—</h2>
+      <p id="update-text" class="modal-text">—</p>
+
+      <div class="update-versions">
+        <span class="ver-chip">
+          <i data-i18n="upd_current">Installed</i>
+          <b id="update-current">—</b>
+        </span>
+        <span class="ver-arrow" aria-hidden="true">→</span>
+        <span class="ver-chip is-new">
+          <i data-i18n="upd_latest">Available</i>
+          <b id="update-latest">—</b>
+        </span>
+      </div>
+
+      <p id="update-meta" class="update-meta"></p>
+
+      <div class="modal-actions">
+        <button id="update-get" class="btn btn-primary">—</button>
+        <button id="update-later" class="btn btn-ghost">—</button>
+      </div>
+
+      <p id="update-link" class="update-link"></p>
+    </div>
+  </div>
+
   <!-- Message dialog (error / success / info) -->
   <div id="msg-modal" class="modal-backdrop" hidden>
     <div class="modal">
@@ -256,5 +289,6 @@
 
   <script src="i18n.js"></script>
   <script src="app.js"></script>
+  <script src="dropdown.js"></script>
 </body>
 </html>

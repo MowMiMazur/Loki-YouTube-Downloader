@@ -4,6 +4,7 @@ bin/*.exe
 # Lokalna konfiguracja użytkownika
 config/settings.json
 config/cookies.dat
+config/update_cache.json
 
 # Python
 __pycache__/

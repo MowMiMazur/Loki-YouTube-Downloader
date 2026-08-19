@@ -124,6 +124,7 @@ Loki-YouTube-Downloader/
 │   ├── index.html        # Powłoka aplikacji (jedna strona)
 │   ├── styles.css        # Style
 │   ├── app.js            # Logika interfejsu
+│   ├── dropdown.js       # Własne listy rozwijane (zamiast natywnych <select>)
 │   └── i18n.js           # Wspólny słownik PL/EN
 ├── bin/                  # ffmpeg.exe / ffprobe.exe (pobierane automatycznie)
 └── config/               # settings.json (konfiguracja użytkownika)
@@ -268,6 +269,7 @@ Loki-YouTube-Downloader/
 │   ├── index.html        # App shell (single page)
 │   ├── styles.css        # Styles
 │   ├── app.js            # UI logic
+│   ├── dropdown.js       # Custom dropdowns (replacing native <select>)
 │   └── i18n.js           # Shared PL/EN dictionary
 ├── bin/                  # ffmpeg.exe / ffprobe.exe (auto-downloaded)
 └── config/               # settings.json (user config)

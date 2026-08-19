@@ -25,6 +25,8 @@ const state = {
   ffmpegModalOpen: false,
   ffmpegAvailable: null,   // null = not checked yet
   engine: null,            // { version, frozen, update }
+  update: null,            // app update info from the maznet.pl API
+  updatePending: false,    // show the update modal once FFmpeg is out of the way
 };
 
 /* ---------- Bridge: Python → JS events ---------- */
@@ -43,6 +45,7 @@ window.Loki = {
     "ffmpeg-progress": (d) => onFfmpegProgress(d),
     "ffmpeg-done": (d) => onFfmpegDone(d),
     "ytdlp-update-done": (d) => onYtdlpUpdateDone(d),
+    "app-update": (d) => onAppUpdate(d),
   },
 };
 
@@ -66,6 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
   wireSettings();
   wireConsole();
   wireFfmpegModal();
+  wireUpdateModal();
   wireDialog();
   resetQuality();
   whenReady(loadAppVersion);
@@ -87,6 +91,7 @@ function applyLanguage(code) {
   updateBestOption();
   renderFfmpegStatus();
   renderEngineStatus();
+  renderUpdateBadge();
   refreshCookiesStatus();
 }
 
@@ -391,6 +396,7 @@ function checkFfmpeg() {
     state.ffmpegAvailable = !!ok;
     renderFfmpegStatus();
     if (!ok) openFfmpegModal();   // hard gate on startup
+    api().check_app_update();     // background — always after the FFmpeg check
   });
 }
 
@@ -455,7 +461,10 @@ function onFfmpegDone(d) {
     if (state.ffmpegModalOpen) {
       setModalProgress(100, t("ff_done"));
       state.ffmpegModalOpen = false;
-      setTimeout(() => ($("#ffmpeg-modal").hidden = true), 500);
+      setTimeout(() => {
+        $("#ffmpeg-modal").hidden = true;
+        if (state.updatePending) { state.updatePending = false; openUpdateModal(); }
+      }, 500);
     }
   } else {
     const detail = d.detail === "ffmpeg_not_in_zip" ? t("ff_notinzip") : (d.detail || t("unknown_error"));
@@ -480,6 +489,72 @@ function setFfmpegStatus(text, cls) {
   const el = $("#ffmpeg-status");
   el.textContent = text;
   el.className = "muted small " + (cls || "");
+}
+
+/* ---------- App update (info only, no auto-update) ---------- */
+function wireUpdateModal() {
+  $("#update-badge").addEventListener("click", openUpdateModal);
+  $("#update-later").addEventListener("click", closeUpdateModal);
+  $("#update-get").addEventListener("click", () => {
+    const page = state.update && state.update.page;
+    if (page) whenReady(() => api().open_url(page));
+    closeUpdateModal();
+  });
+}
+
+function onAppUpdate(d) {
+  if (!d || !d.ok || !d.available) return;
+  state.update = d;
+  renderUpdateBadge();
+  appendLog(`[Loki] ${t("upd_status", { v: d.latest })}`);
+  // The FFmpeg dialog is a hard gate — queue behind it.
+  if (state.ffmpegModalOpen) state.updatePending = true;
+  else openUpdateModal();
+}
+
+function renderUpdateBadge() {
+  const badge = $("#update-badge");
+  const u = state.update;
+  if (!u || !u.available) { badge.hidden = true; return; }
+  badge.textContent = t("upd_badge", { v: u.latest });
+  badge.title = t("upd_badge_hint");
+  badge.hidden = false;
+}
+
+function openUpdateModal() {
+  const u = state.update;
+  if (!u) return;
+  playNotify();
+  $("#update-title").textContent = t("upd_title");
+  $("#update-text").textContent = t("upd_text", { name: u.name || "Loki" });
+  $("#update-current").textContent = "v" + u.current;
+  $("#update-latest").textContent = "v" + u.latest;
+
+  const meta = $("#update-meta");
+  const date = formatReleaseDate(u.released_at);
+  meta.textContent = date ? t("upd_released", { date }) : "";
+  meta.hidden = !date;
+
+  $("#update-link").textContent = u.page || "";
+  $("#update-get").textContent = t("upd_get");
+  $("#update-later").textContent = t("upd_later");
+  $("#update-modal").hidden = false;
+  if (!state.downloading) setStatus(t("upd_status", { v: u.latest }));
+}
+
+function closeUpdateModal() { $("#update-modal").hidden = true; }
+
+function formatReleaseDate(iso) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return "";
+  try {
+    return d.toLocaleDateString(document.documentElement.lang || "en", {
+      year: "numeric", month: "long", day: "numeric",
+    });
+  } catch (e) {
+    return d.toISOString().slice(0, 10);
+  }
 }
 
 /* ---------- yt-dlp engine ---------- */

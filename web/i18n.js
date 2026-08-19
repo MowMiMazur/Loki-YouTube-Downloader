@@ -135,6 +135,20 @@ const I18N = {
     ytdlp_frozen: "Update works only when running from source (python main.py).",
     ytdlp_updated: "Updated. Restart the app to use the new version.",
 
+    /* App update (informational) */
+    upd_badge: "New v{v}",
+    upd_badge_hint: "A newer version is available — click for details.",
+    upd_title: "A new version is available",
+    upd_text:
+      "A newer release of {name} has been published. The app does not update itself — " +
+      "download the new version from the program page.",
+    upd_current: "Installed",
+    upd_latest: "Available",
+    upd_released: "Released {date}",
+    upd_get: "Open the download page",
+    upd_later: "Later",
+    upd_status: "New version {v} is available.",
+
     /* Cookies — dialogs */
     cookies_import_ok_title: "Cookies loaded",
     cookies_import_ok_text:
@@ -271,6 +285,19 @@ const I18N = {
     ytdlp_updated_status: "yt-dlp zaktualizowany — uruchom program ponownie.",
     ytdlp_frozen: "Aktualizacja działa tylko przy uruchomieniu ze źródeł (python main.py).",
     ytdlp_updated: "Zaktualizowano. Uruchom program ponownie, aby użyć nowej wersji.",
+
+    upd_badge: "Nowa v{v}",
+    upd_badge_hint: "Dostępna jest nowsza wersja — kliknij po szczegóły.",
+    upd_title: "Dostępna nowa wersja",
+    upd_text:
+      "Ukazało się nowsze wydanie programu {name}. Aplikacja nie aktualizuje się sama — " +
+      "pobierz nową wersję ze strony programu.",
+    upd_current: "Zainstalowana",
+    upd_latest: "Dostępna",
+    upd_released: "Wydano {date}",
+    upd_get: "Otwórz stronę pobierania",
+    upd_later: "Później",
+    upd_status: "Dostępna nowa wersja {v}.",
 
     cookies_import_ok_title: "Cookies wczytane",
     cookies_import_ok_text:
